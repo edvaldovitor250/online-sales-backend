@@ -1,3 +1,6 @@
+/* eslint-disable prettier/prettier */
+
+
 import { Controller, Post, Body, Get } from '@nestjs/common';
 import { CreateUserDto } from './dtos/createUser.dto';
 import { UserService } from './user.service';
