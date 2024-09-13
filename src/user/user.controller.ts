@@ -5,18 +5,15 @@ import { User } from './interfaces/user.interface';
 
 @Controller('user')
 export class UserController {
-
-  constructor(private readonly userService: UserService){}
+  constructor(private readonly userService: UserService) {}
 
   @Post()
-  async createUser(@Body() createUserDTO: CreateUserDto): Promise<User> {
-    return this.userService.createUser(createUserDTO);
+  createUser(@Body() createUserDto: CreateUserDto): Promise<User> {
+      return this.userService.createUser(createUserDto);
   }
 
   @Get()
-  async getAllUser(): Promise<User[]> {
-    return this.userService.getAllUsers();
+  getAllUsers(): User[] {
+      return this.userService.getAllUsers();
   }
-  
-
 }
