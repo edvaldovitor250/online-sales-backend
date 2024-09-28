@@ -8,7 +8,7 @@ import { AlterTableState1727305750944 } from './1727305750944-alter-table-state'
 import { InsertInState1727305845930 } from './1727305845930-insert-in-state';
 import { InsertInCity1727305893493 } from './1727305893493-insert-in-city';
 
-export const dataMigrations = [
+export const migrationsGlobal = [
     CreateTableUser1726620770841,
     CreateTableCity1726667004482,
     CreateTableState1726666964172,
