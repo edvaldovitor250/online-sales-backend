@@ -17,7 +17,4 @@ export class ReturnUser {
         this.phone = userEntity.phone;
         this.cpf = userEntity.cpf;
     }
-
-
-
 }
