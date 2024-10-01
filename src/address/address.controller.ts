@@ -6,7 +6,6 @@ import { AddressEntity } from './entities/address.entity';
 
 @Controller('address')
 export class AddressController {
-
     constructor(private readonly addressService: AddressService) { }
 
     @Post('/:userId')

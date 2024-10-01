@@ -1,13 +1,16 @@
+/* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
 import { AddressController } from './address.controller';
 import { AddressService } from './address.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AddressEntity } from './entities/address.entity';
-import { UserEntity } from 'src/user/entities/user.entity';
+import { UserModule } from 'src/user/user.module';
 
 @Module({
-  // eslint-disable-next-line prettier/prettier
-  imports: [TypeOrmModule.forFeature([AddressEntity,UserEntity])],
+  imports: [
+    TypeOrmModule.forFeature([AddressEntity]),
+    UserModule,
+  ],
   controllers: [AddressController],
   providers: [AddressService],
 })
