@@ -1,10 +1,11 @@
 /* eslint-disable prettier/prettier */
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { AddressEntity } from './entities/address.entity';
 import { CreateAddressDto } from './dtos/createAddress.dto';
 import { UserService } from 'src/user/user.service'; 
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { CityService } from 'src/city/city.service';
 
 @Injectable()
 export class AddressService {
@@ -12,13 +13,12 @@ export class AddressService {
         @InjectRepository(AddressEntity)
         private readonly addressRepository: Repository<AddressEntity>,
         private readonly userService: UserService, 
+        private readonly cityService: CityService
     ) {}
 
     async createAddress(createAddressDto: CreateAddressDto, userId: number): Promise<AddressEntity> {
-        const userExists = await this.userService.findById(userId);
-        if (!userExists) {
-            throw new NotFoundException(`User with ID ${userId} not found`);
-        }
+        await this.userService.findUserById(userId);
+         await this.cityService.findCityById(createAddressDto.cityId);
 
         const address = this.addressRepository.create({
             ...createAddressDto,

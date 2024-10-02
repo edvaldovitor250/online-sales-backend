@@ -43,7 +43,7 @@ export class UserService {
     return this.userRepository.find();
   }
 
-  async findById(userId: number): Promise<UserEntity> {
+  async findUserById(userId: number): Promise<UserEntity> {
     const user = await this.userRepository.findOne({
         where: { id: userId }, 
     });
