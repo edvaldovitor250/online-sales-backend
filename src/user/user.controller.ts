@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 
-import { Controller, Post, Body, Get, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Controller, Post, Body, Get, UsePipes, ValidationPipe, Param } from '@nestjs/common';
 import { CreateUserDto } from './dtos/createUser.dto';
 import { UserService } from './user.service';
 import { UserEntity } from './entities/user.entity';
@@ -20,5 +20,10 @@ export class UserController {
   async getAllUsers(): Promise<ReturnUser[]> {
     const users: UserEntity[] = await this.userService.getAllUsers();
     return users.map(user => new ReturnUser(user));
+  }
+
+  @Get('/:userId')
+  async getUserByIdUsingRelations(@Param('userId') userId: number): Promise<ReturnUser> {
+    return new ReturnUser(await this.userService.getUserByIdUsingRelations(userId));
   }
 }

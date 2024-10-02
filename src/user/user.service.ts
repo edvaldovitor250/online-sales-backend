@@ -42,6 +42,20 @@ export class UserService {
   async getAllUsers(): Promise<UserEntity[]> {
     return this.userRepository.find();
   }
+  async getUserByIdUsingRelations(userId: number): Promise<UserEntity> {
+    const user = await this.userRepository.findOne({
+      where: {
+        id: userId,
+      },
+      relations: ['addresses'],
+    });
+
+    if (!user) {
+        throw new Error(`User with ID ${userId} not found`);
+    }
+
+    return user;
+}
 
   async findUserById(userId: number): Promise<UserEntity> {
     const user = await this.userRepository.findOne({
