@@ -42,12 +42,17 @@ export class UserService {
   async getAllUsers(): Promise<UserEntity[]> {
     return this.userRepository.find();
   }
+  
   async getUserByIdUsingRelations(userId: number): Promise<UserEntity> {
     const user = await this.userRepository.findOne({
       where: {
         id: userId,
       },
-      relations: ['addresses'],
+      relations: [
+        'addresses',           
+        'addresses.city',       
+        'addresses.city.state'  
+      ],
     });
 
     if (!user) {
@@ -56,6 +61,7 @@ export class UserService {
 
     return user;
 }
+
 
   async findUserById(userId: number): Promise<UserEntity> {
     const user = await this.userRepository.findOne({
