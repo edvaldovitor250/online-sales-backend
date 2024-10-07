@@ -4,7 +4,7 @@ import { Controller, Post, Body, Get, UsePipes, ValidationPipe, Param } from '@n
 import { CreateUserDto } from './dtos/createUser.dto';
 import { UserService } from './user.service';
 import { UserEntity } from './entities/user.entity';
-import { ReturnUser } from './dtos/returnUser.dto';
+import { ReturnUserDTO } from './dtos/returnUser.dto';
 
 @Controller('user')
 export class UserController {
@@ -17,13 +17,13 @@ export class UserController {
   }
 
   @Get()
-  async getAllUsers(): Promise<ReturnUser[]> {
+  async getAllUsers(): Promise<ReturnUserDTO[]> {
     const users: UserEntity[] = await this.userService.getAllUsers();
-    return users.map(user => new ReturnUser(user));
+    return users.map(user => new ReturnUserDTO(user));
   }
 
   @Get('/:userId')
-  async getUserByIdUsingRelations(@Param('userId') userId: number): Promise<ReturnUser> {
-    return new ReturnUser(await this.userService.getUserByIdUsingRelations(userId));
+  async getUserByIdUsingRelations(@Param('userId') userId: number): Promise<ReturnUserDTO> {
+    return new ReturnUserDTO(await this.userService.getUserByIdUsingRelations(userId));
   }
 }
