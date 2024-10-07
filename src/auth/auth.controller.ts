@@ -1,8 +1,8 @@
 /* eslint-disable prettier/prettier */
 import { Controller, Post, Body, UsePipes, ValidationPipe } from '@nestjs/common';
-import { ReturnUserDTO } from 'src/user/dtos/returnUser.dto';
 import { LoginDTO } from './dtos/login.dto';
 import { AuthService } from './auth.service'; 
+import { ReturnLogin } from './dtos/returnLogin.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -13,7 +13,7 @@ export class AuthController {
 
     @UsePipes(ValidationPipe)
     @Post()
-    async login(@Body() loginDto: LoginDTO): Promise<ReturnUserDTO> {
-        return new ReturnUserDTO(await this.authService.login(loginDto));
+    async login(@Body() loginDto: LoginDTO): Promise<ReturnLogin> {
+        return  this.authService.login(loginDto)
     }
 }
