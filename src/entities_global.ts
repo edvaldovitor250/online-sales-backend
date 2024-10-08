@@ -6,6 +6,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { migrationsGlobal } from './migration/migrationsGlobal';
 import { entitiesGlobal } from './entitiesGlobal';
 import { ModuleGlobal } from './module_global.module';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './guard/roles.guard';
 
 @Module({
   imports: [
@@ -28,6 +30,11 @@ import { ModuleGlobal } from './module_global.module';
     ModuleGlobal,
   ],
   controllers: [],
-  providers: [],
+  providers: [ 
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+  ],
 })
 export class AppModule {}

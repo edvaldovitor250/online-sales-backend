@@ -6,6 +6,7 @@ import { StateModule } from "./state/state.module";
 import { UserModule } from "./user/user.module";
 import { CacheModule } from './cache/cache.module';
 import { AuthModule } from './auth/auth.module';
+import { JwtModule} from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { AuthModule } from './auth/auth.module';
     AddressModule,
     CacheModule,
     AuthModule,
+    JwtModule
   ],
   exports: [
     UserModule,
