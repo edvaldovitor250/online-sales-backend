@@ -7,6 +7,7 @@ import { CreateTableAddress1726667024256 } from './1726667024256-create_table_ad
 import { AlterTableState1727305750944 } from './1727305750944-alter-table-state'; 
 import { InsertInState1727305845930 } from './1727305845930-insert-in-state';
 import { InsertInCity1727305893493 } from './1727305893493-insert-in-city';
+import { AlterTableUser1728422401564 } from './1728422401564-alter-table-user';
 
 export const migrationsGlobal = [
     CreateTableUser1726620770841,
@@ -15,5 +16,6 @@ export const migrationsGlobal = [
     CreateTableAddress1726667024256,
     InsertInState1727305845930,
     InsertInCity1727305893493,
-    AlterTableState1727305750944
+    AlterTableState1727305750944,
+    AlterTableUser1728422401564
 ]

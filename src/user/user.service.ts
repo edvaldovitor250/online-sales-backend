@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dtos/createUser.dto';
 import { UserEntity } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
@@ -15,27 +15,27 @@ export class UserService {
 
   async createUser(createUserDTO: CreateUserDto): Promise<UserEntity> {
     try {
+      const existingUser = await this.findUserByEmail(createUserDTO.email);
+      
+      if (existingUser) {
+        throw new BadRequestException('User with this email already exists');
+      }
+  
       const saltOrRounds = 10;
       const passwordHashed = await bcrypt.hash(
         createUserDTO.password,
         saltOrRounds,
       );
-
-      const existingUser = await this.userRepository.findOne({
-        where: { email: createUserDTO.email },
-      });
-      if (existingUser) {
-        throw new Error('User with this email already exists');
-      }
-
-      return this.userRepository.save({
+  
+      const newUser = this.userRepository.create({
         ...createUserDTO,
-        typeUser: 1,
+        type_user: 1, 
         password: passwordHashed,
       });
-    } catch (error) {
-      console.error('Error creating user:', error);
-      throw new Error('Could not create user');
+  
+      return await this.userRepository.save(newUser);
+    } catch {
+      throw new BadRequestException('Could not create user');
     }
   }
 
