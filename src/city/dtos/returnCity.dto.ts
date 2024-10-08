@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 
-import { ReturnStateDto } from "src/state/dtos/returnState.dto";
+import { ReturnStateDto } from "../../state/dtos/returnState.dto";
 import { CityEntity } from "../entities/city.entity";
 
 export class ReturnCityDto {

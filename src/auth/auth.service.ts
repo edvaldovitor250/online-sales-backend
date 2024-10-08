@@ -1,12 +1,12 @@
 /* eslint-disable prettier/prettier */
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { UserEntity } from 'src/user/entities/user.entity';
+import { UserEntity } from '../user/entities/user.entity';
 import { LoginDTO } from './dtos/login.dto';
-import { UserService } from 'src/user/user.service';
+import { UserService } from '../user/user.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { ReturnLogin } from './dtos/returnLogin.dto';
-import { ReturnUserDTO } from 'src/user/dtos/returnUser.dto';
+import { ReturnUserDTO } from '../user/dtos/returnUser.dto';
 import { LoginPayload } from './dtos/loginPayload.dto';
 
 @Injectable()

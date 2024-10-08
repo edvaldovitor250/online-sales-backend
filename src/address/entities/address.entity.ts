@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
-import { CityEntity } from "src/city/entities/city.entity";
-import { UserEntity } from "src/user/entities/user.entity";
+import { CityEntity } from "../../city/entities/city.entity";
+import { UserEntity } from "../../user/entities/user.entity";
 import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, JoinColumn, ManyToOne } from "typeorm";
 
 @Entity({ name: 'address' })

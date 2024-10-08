@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { LoginPayload } from "src/auth/dtos/loginPayload.dto";
+import { LoginPayload } from "../auth/dtos/loginPayload.dto";
 
 export const authorizationToLoginPayload = (authorization: string): LoginPayload | undefined => {
     const authorizationSplitted = authorization.split('.');

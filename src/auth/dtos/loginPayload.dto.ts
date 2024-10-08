@@ -1,4 +1,4 @@
-import { UserEntity } from 'src/user/entities/user.entity';
+import { UserEntity } from '../../user/entities/user.entity';
 
 /* eslint-disable prettier/prettier */
 export class LoginPayload{
