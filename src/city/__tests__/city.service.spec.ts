@@ -60,10 +60,16 @@ describe('CityService', () => {
     jest.spyOn(cityRepository, 'findOne').mockReturnValue(undefined);
     expect(service.findCityById(cityMocks.id)).rejects.toThrowError();
   });
+  
+  it('should retunN a city for name', async () => {
+    const city = await service.findCityByName(cityMocks.name);
+    expect(city).toStrictEqual(cityMocks);
+  });
 
   it('should retunr a cached city', async () => {
     const city = await service.getAllCitiesByStateId(cityMocks.id);
     expect(city).toContainEqual(cityMocks);
   })
+
 
 });

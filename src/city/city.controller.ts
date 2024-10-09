@@ -14,5 +14,10 @@ export class CityController {
         return this.cityService.getAllCitiesByStateId(stateId);
     }
 
+    @Get('/find/:cityName')
+    async findCityByName(@Param('cityName') cityName:string):Promise<CityEntity>{
+        return this.cityService.findCityByName(cityName);
+    }
+
   
 }

@@ -28,4 +28,13 @@ export class CityService {
     }
     return city;
   }
+
+  async findCityByName(nameCity:string): Promise<CityEntity>{
+    const nameCy = await this.citiesRepository.findOne({ where: { name: nameCity }});
+
+    if (!nameCy) {
+      throw new NotFoundException(`City with name ${nameCity} not found.`);
+    }
+    return nameCy;
+  }
 }
