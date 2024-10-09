@@ -14,4 +14,5 @@ export class StateService {
   async getAllState(): Promise<StateEntity[]> {
     return this.stateRepository.find();
   }
+  
 }
