@@ -1,0 +1,3 @@
+/* eslint-disable prettier/prettier */
+
+export const jtwMocks:string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidHlwZVVzZXIiOjkzLCJpYXQiOjE3Mjg1MTYwNTAsImV4cCI6MTcyOTEyMDg1MH0.KK4CAMTin3n1R7y1XcLkHVbUCmlrChSnXiU3t9uZicA';
