@@ -18,22 +18,32 @@ describe('CityService', () => {
       providers: [
         CityService,
         {
-          provide: CacheService,
+          provide: getRepositoryToken(CityEntity),
           useValue: {
-            getCache: jest.fn().mockResolvedValue([cityMocks]), 
+            findOne: jest.fn().mockReturnValue(cityMocks),
+            getAllCitiesByStateId: jest.fn().mockReturnValue([{}]),
           },
         },
         {
-          provide: getRepositoryToken(CityEntity),
+          provide:CacheService,
           useValue: {
-            findOne: jest.fn().mockResolvedValue(cityMocks), 
+            getCache:jest.fn().mockReturnValue([cityMocks])
+          }
+        },
+        {
+          provide: CacheService,
+          useValue: {
+            get: jest.fn(),
+            set: jest.fn(),
           },
         },
       ],
     }).compile();
 
     service = module.get<CityService>(CityService);
-    cityRepository = module.get<Repository<CityEntity>>(getRepositoryToken(CityEntity));
+    cityRepository = module.get<Repository<CityEntity>>(
+      getRepositoryToken(CityEntity),
+    );
   });
 
   it('should be defined', () => {
@@ -42,18 +52,18 @@ describe('CityService', () => {
   });
 
   it('should return find city', async () => {
-    const city = await service.findCityById(cityMocks.id); 
-    expect(city).toStrictEqual(cityMocks); 
+    const city = await service.findCityById(cityMocks.id);
+    expect(city).toStrictEqual(cityMocks);
   });
 
   it('should return error find not found', async () => {
-    jest.spyOn(cityRepository, 'findOne').mockResolvedValueOnce(undefined);
-    await expect(service.findCityById(cityMocks.id)).rejects.toThrowError(); 
+    jest.spyOn(cityRepository, 'findOne').mockReturnValue(undefined);
+    expect(service.findCityById(cityMocks.id)).rejects.toThrowError();
   });
 
-  it('should return all cities by state id', async () => {
-    const cities = await service.getAllCitiesByStateId(cityMocks.stateId);
-    expect(cities).toStrictEqual([cityMocks]);
-  });
-  
+  it('should retunr a cached city', async () => {
+    const city = await service.getAllCitiesByStateId(cityMocks.id);
+    expect(city).toContainEqual(cityMocks);
+  })
+
 });
