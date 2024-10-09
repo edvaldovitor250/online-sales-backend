@@ -6,6 +6,8 @@ import { Repository } from 'typeorm';
 import { UserEntity } from '../entities/user.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { userEntityMocks } from '../__mocks__/user.mock';
+import { createUserMock } from '../__mocks__/createUser.mock'; // Adicione a importação do mock de criação
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { jest } from '@jest/globals'; 
 
 describe('UserService', () => {
@@ -39,75 +41,61 @@ describe('UserService', () => {
     expect(userRepository).toBeDefined();
   });
 
-  it('should return user in findUserByEmail',async () => {
-
-    const user = await service.findUserByEmail(userEntityMocks.email)
-
-    expect(service).toBeDefined();
-    expect(userRepository).toBeDefined();
+  it('should return user in findUserByEmail', async () => {
+    const user = await service.findUserByEmail(userEntityMocks.email);
+    expect(user).toStrictEqual(userEntityMocks);
   });
 
-  it('should return an error in findUserByEmail', async () => {
+  it('should return an error in findUserByEmail when user does not exist', async () => {
     jest.spyOn(userRepository, 'findOne').mockResolvedValue(undefined);
-
     await expect(service.findUserByEmail(userEntityMocks.email))
       .rejects
-      .toThrowError();
+      .toThrow(NotFoundException);
   });
 
-  it('should return user in findUserById',async () => {
-
-    const user = await service.findUserById(userEntityMocks.id)
-
-    expect(service).toBeDefined();
-    expect(userRepository).toBeDefined();
+  it('should return user in findUserById', async () => {
+    const user = await service.findUserById(userEntityMocks.id);
+    expect(user).toStrictEqual(userEntityMocks);
   });
 
-  it('should return an error in findUserById', async () => {
+  it('should return an error in findUserById when user does not exist', async () => {
     jest.spyOn(userRepository, 'findOne').mockResolvedValue(undefined);
-
     await expect(service.findUserById(userEntityMocks.id))
       .rejects
-      .toThrowError();
+      .toThrow(NotFoundException);
   });
 
-  it('should return user in getUserByIdUsingRelations',async () => {
-    expect(service).toBeDefined();
-    expect(userRepository).toBeDefined();
+  it('should return user in getUserByIdUsingRelations', async () => {
+    const user = await service.getUserByIdUsingRelations(userEntityMocks.id);
+    expect(user).toStrictEqual(userEntityMocks);
   });
 
-  it('should return error in findUserByEmail (error DB )', async () => {
-    jest.spyOn(userRepository, 'findOne').mockRejectedValueOnce(new Error());
-    expect(service.findUserByEmail(userEntityMocks.email)).rejects.toThrow();
-  });
-
-  it('should return error in findUserById (error DB )', async () => {
-    jest.spyOn(userRepository, 'findOne').mockRejectedValueOnce(new Error());
-    expect(service.findUserById(userEntityMocks.id)).rejects.toThrow();
-  });
-
-
-  it('should return error if user exists', async () => {
-    jest.spyOn(userRepository, 'findOne').mockResolvedValue(userEntityMocks);
-  
-    await expect(service.createUser(userEntityMocks))
+  it('should return error in getUserByIdUsingRelations when user does not exist', async () => {
+    jest.spyOn(userRepository, 'findOne').mockResolvedValue(undefined);
+    await expect(service.getUserByIdUsingRelations(userEntityMocks.id))
       .rejects
-      .toThrowError('User with this email already exists');
+      .toThrow(Error);
+  });
+
+  it('should return error if user exists when creating user', async () => {
+    jest.spyOn(userRepository, 'findOne').mockResolvedValue(userEntityMocks);
+    await expect(service.createUser(createUserMock))
+      .rejects
+      .toThrow(BadRequestException);
   });
 
   it('should create and return user if user does not exist', async () => {
     jest.spyOn(userRepository, 'findOne').mockResolvedValue(undefined);
     jest.spyOn(userRepository, 'save').mockResolvedValue(userEntityMocks);
-  
-    const user = await service.createUser(userEntityMocks);
-  
+
+    const user = await service.createUser(createUserMock);
     expect(user).toStrictEqual(userEntityMocks);
-
   });
- 
 
-
-
-
-
+  it('should throw an error if there is a database error when creating user', async () => {
+    jest.spyOn(userRepository, 'findOne').mockRejectedValue(new Error());
+    await expect(service.createUser(createUserMock))
+      .rejects
+      .toThrow(Error);
+  });
 });
