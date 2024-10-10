@@ -3,8 +3,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { jest } from '@jest/globals'; 
 import { CacheService } from '../cache.service';
-import { CACHE_MANAGER, CacheModule } from '@nestjs/cache-manager'; // Certifique-se de importar corretamente
-import { Cache } from 'cache-manager'; // A interface correta para Cache
+import { CACHE_MANAGER, CacheModule } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager'; 
 import { userEntityMocks } from '../../user/__mocks__/user.mock';
 
 describe('CacheService', () => {
@@ -13,14 +13,14 @@ describe('CacheService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [CacheModule.register()], // Certifique-se de que o módulo Cache foi importado corretamente
+      imports: [CacheModule.register()],
       providers: [
         CacheService,
         {
           provide: CACHE_MANAGER,
           useValue: {
-            get: jest.fn(), // Mock para o método get do cache
-            set: jest.fn(), // Mock para o método set do cache
+            get: jest.fn(), 
+            set: jest.fn(), 
           },
         },
       ],
@@ -39,17 +39,17 @@ describe('CacheService', () => {
     jest.spyOn(cacheManager, 'get').mockResolvedValue(userEntityMocks);
 
     const user = await service.getCache('key', () => null);
-    expect(user).toStrictEqual(userEntityMocks); // Verifica se o valor do cache foi retornado
-    expect(cacheManager.get).toHaveBeenCalledWith('key'); // Verifica se o cache foi acessado com a chave correta
+    expect(user).toStrictEqual(userEntityMocks);
+    expect(cacheManager.get).toHaveBeenCalledWith('key'); 
   });
 
   it('should return data from function and set cache', async () => {
     const result = { test: 'test' };
-    jest.spyOn(cacheManager, 'get').mockResolvedValue(undefined); // Simula cache vazio
-    jest.spyOn(cacheManager, 'set').mockResolvedValue(undefined); // Simula sucesso ao setar no cache
+    jest.spyOn(cacheManager, 'get').mockResolvedValue(undefined); 
+    jest.spyOn(cacheManager, 'set').mockResolvedValue(undefined); 
 
     const user = await service.getCache('key', () => Promise.resolve(result));
-    expect(user).toStrictEqual(result); // Verifica se o valor gerado pela função foi retornado
-    expect(cacheManager.set).toHaveBeenCalledWith('key', result); // Verifica se o valor foi armazenado no cache
+    expect(user).toStrictEqual(result);
+    expect(cacheManager.set).toHaveBeenCalledWith('key', result); 
   });
 });
