@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { AddressEntity } from './entities/address.entity';
 import { CreateAddressDto } from './dtos/createAddress.dto';
 import { UserService } from '../user/user.service'; 
@@ -27,4 +27,25 @@ export class AddressService {
 
         return this.addressRepository.save(address);
     }
+
+    async findAddressByUserId(userId: number): Promise<AddressEntity[]> {
+        const addresses = await this.addressRepository.find({
+            where:{
+                userId
+            },
+            relations:{
+                city:{
+                    state:true
+                }
+            }
+        });
+
+        if(!addresses || addresses.length === 0){
+            throw new NotFoundException(`Address not found for user with id ${userId}`);
+        }
+
+        return addresses;
+    }
+
+
 }
