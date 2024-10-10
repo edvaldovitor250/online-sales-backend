@@ -14,73 +14,68 @@ export class UserService {
   ) {}
 
   async createUser(createUserDTO: CreateUserDto): Promise<UserEntity> {
+    const existingUser = await this.userRepository.findOne({
+      where: { email: createUserDTO.email },
+    });
+
+    if (existingUser) {
+      throw new BadRequestException('User with this email already exists');
+    }
+
+    const saltOrRounds = 10;
+    const passwordHashed = await bcrypt.hash(createUserDTO.password, saltOrRounds);
+
+    const newUser = this.userRepository.create({
+      ...createUserDTO,
+      type_user: 1, 
+      password: passwordHashed,
+    });
+
     try {
-      const existingUser = await this.findUserByEmail(createUserDTO.email);
-      
-      if (existingUser) {
-        throw new BadRequestException('User with this email already exists');
-      }
-  
-      const saltOrRounds = 10;
-      const passwordHashed = await bcrypt.hash(
-        createUserDTO.password,
-        saltOrRounds,
-      );
-  
-      const newUser = this.userRepository.create({
-        ...createUserDTO,
-        type_user: 1, 
-        password: passwordHashed,
-      });
-  
       return await this.userRepository.save(newUser);
-    } catch {
-      throw new BadRequestException('Could not create user');
+    } catch (error) {
+      throw new BadRequestException(`Could not create user: ${error.message}`);
     }
   }
 
   async getAllUsers(): Promise<UserEntity[]> {
     return this.userRepository.find();
   }
-  
+
   async getUserByIdUsingRelations(userId: number): Promise<UserEntity> {
     const user = await this.userRepository.findOne({
-      where: {
-        id: userId,
-      },
-      relations: [
-        'addresses',           
-        'addresses.city',       
-        'addresses.city.state'  
-      ],
+      where: { id: userId },
+      relations: ['addresses', 'addresses.city', 'addresses.city.state'],
     });
 
     if (!user) {
-        throw new Error(`User with ID ${userId} not found`);
+      throw new NotFoundException(`User with ID ${userId} not found`);
     }
 
     return user;
-}
-
+  }
 
   async findUserById(userId: number): Promise<UserEntity> {
     const user = await this.userRepository.findOne({
-        where: { id: userId }, 
+      where: { id: userId },
     });
+
     if (!user) {
-        throw new NotFoundException(`User with ID ${userId} not found`);
+      throw new NotFoundException(`User with ID ${userId} not found`);
     }
+
     return user;
-}
-
-async findUserByEmail(email: string): Promise<UserEntity> {
-  const user = await this.userRepository.findOne({
-      where: { email }, 
-  });
-  if (!user) {
-      throw new NotFoundException(`User with Email  ${email} not found`);
   }
-  return user;
-}
 
+  async findUserByEmail(email: string): Promise<UserEntity> {
+    const user = await this.userRepository.findOne({
+      where: { email },
+    });
+
+    if (!user) {
+      throw new NotFoundException(`User with Email ${email} not found`);
+    }
+
+    return user;
+  }
 }

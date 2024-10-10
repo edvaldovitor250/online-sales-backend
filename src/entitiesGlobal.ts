@@ -10,5 +10,5 @@ export const entitiesGlobal = [
     UserEntity,
     StateEntity,
     CityEntity,
-    AddressEntity
+    AddressEntity,
 ];

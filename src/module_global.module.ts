@@ -7,6 +7,8 @@ import { UserModule } from './user/user.module';
 import { CacheModule } from './cache/cache.module';
 import { AuthModule } from './auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
+import { CategoryModule } from './category/category.module';
+import { ProductModule } from './product/product.module';
 
 @Module({
   imports: [
@@ -22,6 +24,8 @@ import { JwtModule } from '@nestjs/jwt';
         signOptions: { expiresIn: process.env.JWT_EXPIRES_IN },
       }),
     }),
+    CategoryModule,
+    ProductModule,
   ],
   exports: [
     UserModule,
