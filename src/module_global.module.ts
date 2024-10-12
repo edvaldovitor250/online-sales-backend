@@ -34,7 +34,9 @@ import { ProductModule } from './product/product.module';
     AddressModule,
     CacheModule,
     AuthModule,
-    JwtModule, 
+    JwtModule,
+    CategoryModule,
+    ProductModule,
   ],
 })
 export class ModuleGlobal {}

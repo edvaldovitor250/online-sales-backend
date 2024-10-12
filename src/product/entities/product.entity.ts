@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { CategoryEntity } from "src/category/entities/category.entity";
+import { CategoryEntity } from "../../category/entities/category.entity";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { CreateDateColumn } from "typeorm/decorator/columns/CreateDateColumn";
 
