@@ -18,12 +18,7 @@ import { ProductModule } from './product/product.module';
     AddressModule,
     CacheModule,
     AuthModule,
-    JwtModule.registerAsync({
-      useFactory: () => ({
-        secret: process.env.JWT_SECRET,
-        signOptions: { expiresIn: process.env.JWT_EXPIRES_IN },
-      }),
-    }),
+    JwtModule,
     CategoryModule,
     ProductModule,
   ],
