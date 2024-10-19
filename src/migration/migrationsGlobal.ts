@@ -10,6 +10,7 @@ import { InsertInCity1727305893493 } from './1727305893493-insert-in-city';
 import { AlterTableUser1728422401564 } from './1728422401564-alter-table-user';
 import { CreateTableCategory1728599551033 } from './1728599551033-create-table-category';
 import { CreateTableProduct1728599588283 } from './1728599588283-create-table-product';
+import { InsertRootInUser1729374161281 } from './1729374161281-insert-root-in-user';
 
 export const migrationsGlobal = [
     CreateTableUser1726620770841,
@@ -21,6 +22,7 @@ export const migrationsGlobal = [
     AlterTableState1727305750944,
     AlterTableUser1728422401564,
     CreateTableCategory1728599551033,
-    CreateTableProduct1728599588283
+    CreateTableProduct1728599588283,
+    InsertRootInUser1729374161281
 
 ]
