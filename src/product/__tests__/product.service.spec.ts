@@ -6,10 +6,12 @@ import { ProductEntity } from '../entities/product.entity';
 import { Repository } from 'typeorm';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { productMock } from '../__mocks__/product.mock';
+import { CategoryService } from 'src/category/category.service';
 
 describe('ProductService', () => {
   let service: ProductService;
   let productRepository: Repository<ProductEntity>;
+  let categoryService: CategoryService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -26,6 +28,8 @@ describe('ProductService', () => {
     }).compile();
 
     service = module.get<ProductService>(ProductService);
+    productRepository = module.get<Repository<ProductEntity>>(getRepositoryToken(ProductEntity));
+    categoryService = module.get<CategoryService>(CategoryService);
     productRepository = module.get<Repository<ProductEntity>>(getRepositoryToken(ProductEntity));
   });
 
@@ -52,4 +56,16 @@ describe('ProductService', () => {
 
     await expect(service.findAllProduct()).rejects.toThrowError('Some error');
   });
+
+  it('should return product after insert in DB', async () => {
+
+    jest.spyOn(productRepository,'save').mockResolvedValueOnce(productMock);
+
+    const product = await service.createProduct(productMock);
+    expect(product).toStrictEqual(productMock);
+  
+  });
+
+
+
 });
