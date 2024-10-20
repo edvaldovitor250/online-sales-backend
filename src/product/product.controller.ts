@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Delete, Get, Param, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param,Put, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { Roles } from '../decorators/roles.decorator';
 import { UserType } from '../user/enum/user-type.enum';
 import { ReturnProduct } from './dtos/return-product.dto';
@@ -30,5 +30,15 @@ export class ProductController {
   @Delete('/:productId')
   async deleteProduct(@Param('productId')productId: number): Promise<DeleteResult> {
     return this.productService.deleteProduct(productId);
+  }
+
+  @Roles(UserType.ADMIN)
+  @UsePipes(ValidationPipe)
+  @Put('/:productId')
+  async updateProduct(
+    @Body() UpdateProduct: CreateProductDto,
+    @Param('productId') productId: number,
+  ): Promise<ProductEntity> {
+    return this.productService.updateProduct(UpdateProduct, productId);
   }
 }
