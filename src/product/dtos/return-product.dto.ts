@@ -3,17 +3,17 @@ import { ProductEntity } from './../entities/product.entity';
 
 export class ReturnProduct {
     
-   readonly id:number;
-    name:string;
-    price:number;
-    image:string;
+    readonly id: number;
+    readonly name: string;
+    readonly price: number;
+    readonly image: string;
 
 
-    constructor(ProductEntity: ProductEntity){
-        this.id = ProductEntity.id;
-        this.name = ProductEntity.name;
-        this.price = ProductEntity.price;
-        this.image = ProductEntity.image;
-
+    constructor(productEntity: ProductEntity){
+      
+    this.id = productEntity.id;
+    this.name = productEntity.name || ''; 
+    this.price = productEntity.price !== undefined ? productEntity.price : 0;
+    this.image = productEntity.image || '';
     }
 }

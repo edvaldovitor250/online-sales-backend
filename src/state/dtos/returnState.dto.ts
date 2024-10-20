@@ -2,9 +2,9 @@
 import { StateEntity } from "../entities/state.entity";
 
 export class ReturnStateDto{
-    name:string;
+    readonly name:string;
 
     constructor(state: StateEntity) {
-        this.name = state.name;
+        this.name = state.name || '' ;
     }
 }

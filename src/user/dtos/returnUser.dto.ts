@@ -4,12 +4,12 @@ import { ReturnAddressDto } from '../../address/dtos/returnAddress.dto';
 import { UserEntity } from '../entities/user.entity';
 
 export class ReturnUserDTO {
-    id: number;
-    name: string;
-    email: string;
-    phone: string;
-    cpf: string;
-    addresses?: ReturnAddressDto[];
+    readonly id: number;
+    readonly name: string;
+    readonly email: string;
+    readonly phone: string;
+    readonly cpf: string;
+    readonly addresses?: ReturnAddressDto[];
 
 
     constructor(user: UserEntity) {
