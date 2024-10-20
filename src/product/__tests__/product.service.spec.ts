@@ -6,7 +6,8 @@ import { ProductEntity } from '../entities/product.entity';
 import { Repository } from 'typeorm';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { productMock } from '../__mocks__/product.mock';
-import { CategoryService } from 'src/category/category.service';
+import { CategoryService } from '../../category/category.service';
+import { categoryMock } from '../../category/__mocks__/category.mock';
 
 describe('ProductService', () => {
   let service: ProductService;
@@ -18,10 +19,17 @@ describe('ProductService', () => {
       providers: [
         ProductService,
         {
+          provide: CategoryService,
+          useValue: {
+            findCategoryById: jest.fn().mockResolvedValue(categoryMock),
+          },
+        },
+        {
           provide: getRepositoryToken(ProductEntity),
           useValue: {
             find: jest.fn().mockResolvedValue([productMock]),
-            save: jest.fn().mockResolvedValue(productMock), 
+            findOne: jest.fn().mockResolvedValue(productMock),
+            save: jest.fn().mockResolvedValue(productMock),
           },
         },
       ],
