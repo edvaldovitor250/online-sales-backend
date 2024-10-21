@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { CategoryEntity } from 'src/category/entities/category.entity';
+import { CategoryEntity } from '../../category/entities/category.entity';
 export class ReturnCategoryDto {
    readonly id: number;
    readonly name:string;

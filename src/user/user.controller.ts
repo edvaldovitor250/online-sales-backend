@@ -6,9 +6,9 @@ import { UserService } from './user.service';
 import { UserEntity } from './entities/user.entity';
 import { ReturnUserDTO } from './dtos/returnUser.dto';
 import { UpdatePasswordDto } from './dtos/update-password.dto';
-import { UserId } from 'src/decorators/user-id-decorator';
+import { UserId } from '../decorators/user-id-decorator';
 import { UserType } from './enum/user-type.enum';
-import { Roles } from 'src/decorators/roles.decorator';
+import { Roles } from '../decorators/roles.decorator';
 
 @Controller('user')
 export class UserController {
@@ -20,17 +20,20 @@ export class UserController {
     return this.userService.createUser(createUserDto);
   }
 
+  @Roles(UserType.ADMIN)
   @Get()
   async getAllUsers(): Promise<ReturnUserDTO[]> {
     const users: UserEntity[] = await this.userService.getAllUsers();
     return users.map(user => new ReturnUserDTO(user));
   }
 
+  @Roles(UserType.ADMIN)
   @Get('/:userId')
   async getUserByIdUsingRelations(@Param('userId') userId: number): Promise<ReturnUserDTO> {
     return new ReturnUserDTO(await this.userService.getUserByIdUsingRelations(userId));
   }
 
+  @Roles(UserType.ADMIN,UserType.USER)
   @Roles(UserType.ADMIN, UserType.USER)
   @Patch()
   @UsePipes(ValidationPipe)
