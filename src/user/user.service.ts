@@ -2,10 +2,11 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dtos/createUser.dto';
 import { UserEntity } from './entities/user.entity';
-import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserType } from './enum/user-type.enum';
+import { UpdatePasswordDto } from './dtos/update-password.dto';
+import { createPasswordHashed, validatePassword } from '../utils/password';
 
 @Injectable()
 export class UserService {
@@ -14,28 +15,25 @@ export class UserService {
     private readonly userRepository: Repository<UserEntity>,
   ) {}
 
-  async createUser(createUserDTO: CreateUserDto): Promise<UserEntity> {
-    const existingUser = await this.userRepository.findOne({
-      where: { email: createUserDTO.email },
-    });
-
-    if (existingUser) {
-      throw new BadRequestException('User with this email already exists');
+  async createUser(createUserDto: CreateUserDto): Promise<UserEntity> {
+    const user = await this.findUserByEmail(createUserDto.email).catch(
+      () => undefined,
+    );
+    if (user) {
+      throw new BadRequestException('Email already exists');
     }
 
-    const saltOrRounds = 10;
-    const passwordHashed = await bcrypt.hash(createUserDTO.password, saltOrRounds);
-
-    const newUser = this.userRepository.create({
-      ...createUserDTO,
-      type_user: UserType.USER, 
-      password: passwordHashed,
-    });
-
     try {
-      return await this.userRepository.save(newUser);
+      const passwordHash = await createPasswordHashed(createUserDto.password);
+
+      return this.userRepository.save({
+        ...createUserDto,
+        typeUser: UserType.USER,
+        password: passwordHash,
+      });
     } catch (error) {
-      throw new BadRequestException(`Could not create user: ${error.message}`);
+      console.error('Error hashing password:', error);
+      throw error;
     }
   }
 
@@ -79,4 +77,26 @@ export class UserService {
 
     return user;
   }
+
+  async updatePasswordUser(updatePasswordDTO: UpdatePasswordDto, userId: number,): Promise<UserEntity> {
+    const user = await this.findUserById(userId);
+
+    const passwordHash = await createPasswordHashed(
+      updatePasswordDTO.newPassword,
+    );
+
+    const passwordMatch = await validatePassword(
+      updatePasswordDTO.lastPassword,
+      user.password || '',
+    );
+    if (!passwordMatch) {
+      throw new BadRequestException('Password does not match');
+    }
+
+    return this.userRepository.save({
+      ...user,
+      password: passwordHash,
+    });
+  }
+
 }
