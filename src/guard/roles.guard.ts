@@ -14,33 +14,24 @@ export class RolesGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const requiredRoles = this.reflector.getAllAndOverride<UserType[]>(ROLES_KEY, [context.getHandler(), context.getClass()]);
-
+    const requiredRoles = this.reflector.getAllAndOverride<UserType[]>(
+      ROLES_KEY,
+      [context.getHandler(), context.getClass()],
+    );
     if (!requiredRoles) {
-      return true; 
+      return true;
     }
 
-    const request = context.switchToHttp().getRequest();
-    const authorization = request.headers.authorization;
-
-    if (!authorization || !authorization.startsWith('Bearer ')) {
-      return true; 
-    }
-
-    const token = authorization.split(' ')[1];
-
-    if (!token) {
-      return true; 
-    }
-
-    try {
-      const loginPayLoad: LoginPayload = await this.jwtService.verifyAsync(token, {
+    const { authorization } = context.switchToHttp().getRequest().headers;
+    const loginPayLoad: LoginPayload | undefined = await this.jwtService
+      .verifyAsync(authorization, {
         secret: process.env.JWT_SECRET,
-      });
-
-      return requiredRoles.some((role) => role === loginPayLoad.typeUser);
-    } catch {
-      return true; 
+      })
+      .catch(() => undefined);
+    if (!loginPayLoad) {
+      return false;
     }
+
+    return requiredRoles.some((role) => role === loginPayLoad.typeUser);
   }
 }
