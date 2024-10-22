@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
+import { CartProductEntity } from "../../cart-product/entities/cart-product.entity";
 import { CategoryEntity } from "../../category/entities/category.entity";
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import { CreateDateColumn } from "typeorm/decorator/columns/CreateDateColumn";
 
 @Entity({ name: 'product' })
@@ -24,10 +25,20 @@ export class ProductEntity {
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn({ name: 'updated_at' })
+  @CreateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 
-  @ManyToOne(() => CategoryEntity, (category: CategoryEntity) => category.products)
+  @OneToMany(
+    () => CartProductEntity,
+    (cartProduct: CartProductEntity) => cartProduct.product,
+  )
+  cartProducts?: CartProductEntity[]; 
+  @ManyToOne(
+    () => CategoryEntity,
+    (category: CategoryEntity) => category.products,
+  )
   @JoinColumn({ name: 'category_id', referencedColumnName: 'id' })
   category?: CategoryEntity;
+
 }
+

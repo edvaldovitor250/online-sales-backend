@@ -9,5 +9,6 @@ export const productMock: ProductEntity = {
     price: 21.12,
     image: "432432432",
     updatedAt: new Date(),
-    createdAt: new Date()
+    createdAt: new Date(),
+    cartProducts: []
 }

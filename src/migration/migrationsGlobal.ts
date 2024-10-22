@@ -12,6 +12,7 @@ import { CreateTableCategory1728599551033 } from './1728599551033-create-table-c
 import { CreateTableProduct1728599588283 } from './1728599588283-create-table-product';
 import { InsertRootInUser1729374161281 } from './1729374161281-insert-root-in-user';
 import { CreateTableCart1729557237620 } from './1729557237620-create-table-cart';
+import { CreateTableCartProduct1729630818082 } from './1729630818082-create-table-cart-product';
 
 export const migrationsGlobal = [
     CreateTableUser1726620770841,
@@ -25,6 +26,7 @@ export const migrationsGlobal = [
     CreateTableCategory1728599551033,
     CreateTableProduct1728599588283,
     InsertRootInUser1729374161281,
-    CreateTableCart1729557237620
+    CreateTableCart1729557237620,
+    CreateTableCartProduct1729630818082
 
 ]

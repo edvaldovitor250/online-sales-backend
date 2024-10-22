@@ -1,6 +1,8 @@
 /* eslint-disable prettier/prettier */
 
 import { AddressEntity } from "./address/entities/address.entity";
+import { CartProductEntity } from "./cart-product/entities/cart-product.entity";
+import { CartEntity } from "./cart/entities/cart.entities";
 import { CategoryEntity } from "./category/entities/category.entity";
 import { CityEntity } from "./city/entities/city.entity";
 import { ProductEntity } from "./product/entities/product.entity";
@@ -14,5 +16,7 @@ export const entitiesGlobal = [
     CityEntity,
     AddressEntity,
     CategoryEntity,
-    ProductEntity
+    CartEntity,
+    ProductEntity,
+    CartProductEntity
 ];
