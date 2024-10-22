@@ -1,0 +1,31 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable prettier/prettier */
+import { Test, TestingModule } from '@nestjs/testing';
+import { CartService } from '../cart.service';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { CartEntity } from '../entities/cart.entities';
+
+describe('CartService', () => {
+  let service: CartService;
+  let cartRepository: Repository<CartEntity>;
+
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        CartService,
+        {
+          provide: getRepositoryToken(CartEntity),
+          useClass: Repository,
+        },
+      ],
+    }).compile();
+
+    service = module.get<CartService>(CartService);
+    cartRepository = module.get<Repository<CartEntity>>(getRepositoryToken(CartEntity));
+  });
+
+  it('should be defined', () => {
+    expect(service).toBeDefined();
+  });
+});
