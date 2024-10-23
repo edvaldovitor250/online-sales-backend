@@ -10,36 +10,47 @@ export class CartService {
 
     constructor(
         @InjectRepository(CartEntity)
-        private readonly cardRepository: Repository<CartEntity>) {}
+        private readonly cartRepository: Repository<CartEntity>) {}
 
-        async verifyActiveCart(userId:number):Promise<CartEntity>{
-            const card =  await this.cardRepository.findOne({
-                where: {
-                    userId,
-                }
-            })
+    async verifyActiveCart(userId: number): Promise<CartEntity> {
+        const cart = await this.cartRepository.findOne({
+            where: {
+                userId,
+                active: true, 
+            },
+        });
 
-            if(!card){
-                throw new NotFoundException("Cart active not found")
-            }
-
-            return card;
+        if (!cart) {
+            throw new NotFoundException('Active cart not found');
         }
 
-        async createCart(userId:number): Promise<CartEntity> {
-            return this.cardRepository.save({
-                active:true,
-                userId
-            })
-        }
-        
-        async insertProductInCard(insertCart:InsertCartDto,userId:number) :Promise<CartEntity>{
-            const card = await this.verifyActiveCart(userId).catch(async() => {
-                return await this.createCart(userId)
-            });
-
-            return card;
-            
-        }
+        return cart;
     }
-    
+
+    async createCart(userId: number): Promise<CartEntity> {
+        const newCart = this.cartRepository.create({
+            active: true,
+            userId,
+        });
+        return this.cartRepository.save(newCart);
+    }
+
+    async insertProductInCart(insertCart: InsertCartDto, userId: number): Promise<CartEntity> {
+        let cart: CartEntity;
+
+        try {
+            cart = await this.verifyActiveCart(userId);
+        } catch  {
+            cart = await this.createCart(userId);
+        }
+
+
+        return cart;
+    }
+
+    async getProductInCart(): Promise<CartEntity[]>{
+        return this.cartRepository.find();
+    }
+
+
+}

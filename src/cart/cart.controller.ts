@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { Roles } from 'src/decorators/roles.decorator';
 import { UserType } from 'src/user/enum/user-type.enum';
 import { CartEntity } from './entities/cart.entities';
@@ -15,10 +15,15 @@ export class CartController {
         private readonly cartService: CartService
     ){}
 
+    @Get()
+    async getProductInCart(): Promise<CartEntity[]>{
+      return await this.cartService.getProductInCart();
+    }
+
   
   @UsePipes(ValidationPipe) 
   @Post()
   async createCart(@Body() insertCart: InsertCartDto,@UserId() userId: number): Promise<CartEntity> {
-    return this.cartService.insertProductInCard(insertCart,userId);
+    return this.cartService.insertProductInCart(insertCart,userId);
   }
 }
