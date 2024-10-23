@@ -41,5 +41,4 @@ export class UserController {
   ): Promise<UserEntity> {
     return this.userService.updatePasswordUser(updatePasswordDTO, userId);
   }
-
 }
