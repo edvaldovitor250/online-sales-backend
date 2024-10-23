@@ -4,13 +4,16 @@ import { Repository } from 'typeorm';
 import { CartEntity } from './entities/cart.entities';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InsertCartDto } from './dtos/insert-cart.dto';
+import { CartProductService } from 'src/cart-product/cart-product.service';
 
 @Injectable()
 export class CartService {
 
     constructor(
         @InjectRepository(CartEntity)
-        private readonly cartRepository: Repository<CartEntity>) {}
+        private readonly cartRepository: Repository<CartEntity>,
+        private readonly cartProductService: CartProductService
+    ) {}
 
     async verifyActiveCart(userId: number): Promise<CartEntity> {
         const cart = await this.cartRepository.findOne({
@@ -35,22 +38,41 @@ export class CartService {
         return this.cartRepository.save(newCart);
     }
 
-    async insertProductInCart(insertCart: InsertCartDto, userId: number): Promise<CartEntity> {
-        let cart: CartEntity;
-
-        try {
-            cart = await this.verifyActiveCart(userId);
-        } catch  {
-            cart = await this.createCart(userId);
+    async findCartByUserId(userId: number,isRelations?: boolean,): Promise<CartEntity> {
+        let query = this.cartRepository
+          .createQueryBuilder('cart')
+          .where('cart.userId = :userId', { userId })
+          .andWhere('cart.active = :active', { active: true });
+    
+        if (isRelations) {
+          query = query
+            .leftJoinAndSelect('cart.cartProducts', 'cartProducts')
+            .leftJoinAndSelect('cartProducts.product', 'product');
         }
-
-
+    
+        const cart = await query.getOne();
+    
+        if (!cart) {
+          throw new NotFoundException('Cart active not found');
+        }
         return cart;
-    }
+      }
+
+    
+
+    async insertProductInCart(insertCartDTO: InsertCartDto,userId: number,): Promise<CartEntity> {
+        const cart = await this.findCartByUserId(userId).catch(async () => {
+          return await this.createCart(userId);
+        });
+    
+        await this.cartProductService.insertProductInCart(insertCartDTO, cart);
+    
+        return cart;
+      }
+    
 
     async getProductInCart(): Promise<CartEntity[]>{
         return this.cartRepository.find();
     }
-
 
 }
