@@ -50,6 +50,6 @@ export class CartProductService {
 
         cartProduct.amount = insertCartDto.amount;
 
-        return this.cartProductRepository.save(cartProduct);
+        return cartProduct;
     }
 }
