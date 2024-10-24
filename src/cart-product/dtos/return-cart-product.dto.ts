@@ -5,12 +5,12 @@ import { CartProductEntity } from "../entities/cart-product.entity";
 
 export class ReturnCartProductDto{
     
-    id: number;
-    cartId: number;
-    productId: number;
-    amount: number;
-    product: ReturnProduct;
-    cart?: ReturnCartDto;
+    readonly id: number;
+    readonly cartId: number;
+    readonly productId: number;
+    readonly amount: number;
+    readonly product: ReturnProduct;
+    readonly cart?: ReturnCartDto;
 
     constructor(cartProduct: CartProductEntity) {
         this.id = cartProduct.id;

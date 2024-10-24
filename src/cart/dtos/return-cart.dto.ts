@@ -3,8 +3,8 @@ import { ReturnCartProductDto } from "../../cart-product/dtos/return-cart-produc
 import { CartEntity } from "../entities/cart.entities";
 
 export class ReturnCartDto {
-    id: number;
-    cartProducts?: ReturnCartProductDto[];
+   readonly id: number;
+   readonly cartProducts?: ReturnCartProductDto[];
 
     constructor(cart: CartEntity) {
         this.id = cart.id;
