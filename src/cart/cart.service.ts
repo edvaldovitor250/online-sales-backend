@@ -4,7 +4,7 @@ import { DeleteResult, Repository } from 'typeorm';
 import { CartEntity } from './entities/cart.entities';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InsertCartDto } from './dtos/insert-cart.dto';
-import { CartProductService } from 'src/cart-product/cart-product.service';
+import { CartProductService } from '../cart-product/cart-product.service';
 import { UpdatetCartDto } from './dtos/update-cart.dto copy';
 
 const LINE_AFFECTED = 1;

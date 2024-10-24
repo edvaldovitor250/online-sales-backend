@@ -6,7 +6,7 @@ import { DeleteResult, Repository } from 'typeorm';
 import { InsertCartDto } from '../cart/dtos/insert-cart.dto';
 import { CartEntity } from '../cart/entities/cart.entities';
 import { ProductService } from '../product/product.service';
-import { UpdatetCartDto } from 'src/cart/dtos/update-cart.dto copy';
+import { UpdatetCartDto } from '../cart/dtos/update-cart.dto copy';
 
 @Injectable()
 export class CartProductService {

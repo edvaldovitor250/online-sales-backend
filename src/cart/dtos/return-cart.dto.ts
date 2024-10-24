@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { ReturnCartProductDto } from "src/cart-product/dtos/return-cart-product.dto";
+import { ReturnCartProductDto } from "../../cart-product/dtos/return-cart-product.dto";
 import { CartEntity } from "../entities/cart.entities";
 
 export class ReturnCartDto {
