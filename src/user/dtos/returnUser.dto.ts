@@ -4,6 +4,7 @@ import { ReturnAddressDto } from '../../address/dtos/returnAddress.dto';
 import { UserEntity } from '../entities/user.entity';
 
 export class ReturnUserDTO {
+    
     readonly id: number;
     readonly name: string;
     readonly email: string;

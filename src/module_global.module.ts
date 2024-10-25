@@ -11,6 +11,7 @@ import { CategoryModule } from './category/category.module';
 import { ProductModule } from './product/product.module';
 import { CartModule } from './cart/cart.module';
 import { CartProductModule } from './cart-product/cart-product.module';
+import { Addreess2Controller } from './addreess2/addreess2.controller';
 
 @Module({
   imports: [
@@ -39,5 +40,6 @@ import { CartProductModule } from './cart-product/cart-product.module';
     CartModule,
     CartProductModule
   ],
+  controllers: [Addreess2Controller],
 })
 export class ModuleGlobal {}
