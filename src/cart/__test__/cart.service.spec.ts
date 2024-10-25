@@ -12,6 +12,9 @@ import { userEntityMocks } from '../../user/__mocks__/user.mock';
 import { ReturnDeleteMock } from '../../product/__mocks__/return-delete.mock';
 import { NotFoundException } from '@nestjs/common';
 import { insertCartMock } from '../__mocks__/insert-cart.mock';
+import { productMock } from '../../product/__mocks__/product.mock';
+import { ProductService } from '../../product/product.service';
+import { UpdateCartMock } from '../../cart-product/__mocks__/update-cart.mock';
 
 describe('CartService', () => {
   let service: CartService;
@@ -31,16 +34,22 @@ describe('CartService', () => {
           },
         },
         {
+          provide: ProductService,
+          useValue: {
+            findProductById: jest.fn().mockResolvedValue(productMock),
+          },
+        },
+        {
           provide: getRepositoryToken(CartEntity),
           useValue: {
             save: jest.fn().mockResolvedValue(cartMock),
             findOne: jest.fn().mockResolvedValue(cartMock),
-            create: jest.fn().mockReturnValue(cartMock), 
+            create: jest.fn().mockReturnValue(cartMock),
           },
         },
       ],
     }).compile();
-    
+
     service = module.get<CartService>(CartService);
     cartRepository = module.get<Repository<CartEntity>>(getRepositoryToken(CartEntity));
     cartProductService = module.get<CartProductService>(CartProductService); 
@@ -53,12 +62,12 @@ describe('CartService', () => {
   });
 
   it('should return delete result if delete cart', async () => {
-    jest.spyOn(cartRepository, 'save'); 
+    const spy = jest.spyOn(cartRepository, 'save'); 
 
     const resultDelete = await service.clearCart(userEntityMocks.id);
 
     expect(resultDelete).toStrictEqual(ReturnDeleteMock);
-    expect(cartRepository.save).toHaveBeenCalledWith({
+    expect(spy).toHaveBeenCalledWith({
       ...cartMock,
       active: false,
     });
@@ -107,14 +116,14 @@ describe('CartService', () => {
 
     const cart = await service.createCart(userEntityMocks.id);
 
-    expect(cart).toBe(cartMock);
+    expect(cart).toStrictEqual(cartMock);
     expect(spy).toHaveBeenCalledWith({
       active: true,
       userId: userEntityMocks.id,
     });
   });
 
-  it('should return cart not found info in save (insertProductInCart)', async () => {
+  it('should create a new cart when cart does not exist (insertProductInCart)', async () => {
     jest.spyOn(cartRepository, 'findOne').mockResolvedValue(undefined);
     const spySave = jest.spyOn(cartRepository, 'save');
     const spyCartProductService = jest.spyOn(cartProductService, 'insertProductInCart');
@@ -126,7 +135,7 @@ describe('CartService', () => {
     expect(spyCartProductService).toHaveBeenCalled();
   });
 
-  it('should return cart found in save (insertProductInCart)', async () => {
+  it('should return cart found and not save again (insertProductInCart)', async () => {
     jest.spyOn(cartRepository, 'findOne').mockResolvedValue(cartMock); 
     const spySave = jest.spyOn(cartRepository, 'save');
     const spyCartProductService = jest.spyOn(cartProductService, 'insertProductInCart');
@@ -136,5 +145,27 @@ describe('CartService', () => {
     expect(cart).toStrictEqual(cartMock);
     expect(spySave).not.toHaveBeenCalled(); 
     expect(spyCartProductService).toHaveBeenCalled();
+  });
+
+  it('should return error if product not found when updating product in cart', async () => {
+
+    await expect(service.updateProductInCart(UpdateCartMock, undefined)).rejects.toThrow(NotFoundException);
+  });
+
+  it('should return error if cart not found when updating product in cart', async () => {
+    jest.spyOn(cartRepository, 'findOne').mockResolvedValue(undefined);
+
+    await expect(service.updateProductInCart(UpdateCartMock,undefined)).rejects.toThrow(NotFoundException);
+  });
+
+  it('should update product in cart if it exists', async () => {
+    const spy = jest.spyOn(cartRepository, 'save');
+
+    const cartProduct = await service.updateProductInCart(UpdateCartMock, undefined);
+
+    expect(cartProduct).toStrictEqual(cartMock);
+    expect(spy).toHaveBeenCalledWith(expect.objectContaining({
+      amount: UpdateCartMock.amount,
+    }));
   });
 });
