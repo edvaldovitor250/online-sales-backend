@@ -3,6 +3,7 @@ import { ReturnCartProductDto } from "../../cart-product/dtos/return-cart-produc
 import { CartEntity } from "../entities/cart.entities";
 
 export class ReturnCartDto {
+    
    readonly id: number;
    readonly cartProducts?: ReturnCartProductDto[];
 
