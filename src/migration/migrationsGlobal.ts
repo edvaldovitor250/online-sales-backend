@@ -16,6 +16,8 @@ import { CreateTableCartProduct1729630818082 } from './1729630818082-create-tabl
 import { AlterTableCart1729638959259 } from './1729638959259-alter-table-cart';
 import { CreateTableStatus1730037635166 } from './1730037635166-create-table-status';
 import { CreateTablePayment1730038217942 } from './1730038217942-create-table-payment';
+import { CreateTableOrderProduct1730057750497 } from './1730057750497-create-table-order-product';
+import { CreateTableOrder1730057727952 } from './1730057727952-create-table-order';
 
 export const migrationsGlobal = [
     CreateTableUser1726620770841,
@@ -33,5 +35,7 @@ export const migrationsGlobal = [
     CreateTableCartProduct1729630818082,
     AlterTableCart1729638959259,
     CreateTableStatus1730037635166,
-    CreateTablePayment1730038217942
+    CreateTablePayment1730038217942,
+    CreateTableOrder1730057727952,
+    CreateTableOrderProduct1730057750497
 ]
