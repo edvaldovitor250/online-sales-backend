@@ -11,7 +11,8 @@ import { CategoryModule } from './category/category.module';
 import { ProductModule } from './product/product.module';
 import { CartModule } from './cart/cart.module';
 import { CartProductModule } from './cart-product/cart-product.module';
-import { Addreess2Controller } from './addreess2/addreess2.controller';
+import { PaymentStatusModule } from './payment-status/payment-status.module';
+import { PaymentModule } from './payment/payment.module';
 
 @Module({
   imports: [
@@ -26,6 +27,8 @@ import { Addreess2Controller } from './addreess2/addreess2.controller';
     ProductModule,
     CartModule,
     CartProductModule,
+    PaymentStatusModule,
+    PaymentModule,
   ],
   exports: [
     UserModule,
@@ -38,8 +41,9 @@ import { Addreess2Controller } from './addreess2/addreess2.controller';
     CategoryModule,
     ProductModule,
     CartModule,
-    CartProductModule
+    CartProductModule,
+    PaymentStatusModule,
+    PaymentModule
   ],
-  controllers: [Addreess2Controller],
 })
 export class ModuleGlobal {}
