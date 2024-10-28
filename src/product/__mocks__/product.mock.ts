@@ -10,5 +10,6 @@ export const productMock: ProductEntity = {
     image: "432432432",
     updatedAt: new Date(),
     createdAt: new Date(),
-    cartProducts: []
+    cartProducts: [],
+    ordersProduct: []
 }

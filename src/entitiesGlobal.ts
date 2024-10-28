@@ -7,6 +7,7 @@ import { CategoryEntity } from "./category/entities/category.entity";
 import { CityEntity } from "./city/entities/city.entity";
 import { OrderProductEntity } from "./order-product/entities/order-product.entity";
 import { OrderEntity } from "./order/entities/order.entity";
+import { PaymentStatusEntity } from "./payment-status/entities/payment-status.entity";
 import { PaymentCreditCardEntity } from "./payment/entities/payment-credit-card.entity";
 import { PaymentPixEntity } from "./payment/entities/payment-pix.entity";
 import { PaymentEntity } from "./payment/entities/payment.entity";
@@ -28,5 +29,7 @@ export const entitiesGlobal = [
     PaymentPixEntity,
     PaymentCreditCardEntity,
     OrderEntity,
-    OrderProductEntity
+    OrderProductEntity,
+    PaymentStatusEntity
+    
 ];

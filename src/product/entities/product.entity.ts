@@ -1,7 +1,8 @@
 /* eslint-disable prettier/prettier */
+import { OrderProductEntity } from "src/order-product/entities/order-product.entity";
 import { CartProductEntity } from "../../cart-product/entities/cart-product.entity";
 import { CategoryEntity } from "../../category/entities/category.entity";
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
+import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import { CreateDateColumn } from "typeorm/decorator/columns/CreateDateColumn";
 
 @Entity({ name: 'product' })
@@ -30,15 +31,18 @@ export class ProductEntity {
 
   @OneToMany(
     () => CartProductEntity,
-    (cartProduct: CartProductEntity) => cartProduct.product,
+    (cartProduct?: CartProductEntity) => cartProduct.product,
   )
   cartProducts?: CartProductEntity[]; 
   @ManyToOne(
     () => CategoryEntity,
-    (category: CategoryEntity) => category.products,
+    (category?: CategoryEntity) => category.products,
   )
   @JoinColumn({ name: 'category_id', referencedColumnName: 'id' })
   category?: CategoryEntity;
+
+  @ManyToMany(() => OrderProductEntity, (orderProduct) => orderProduct.product)
+  ordersProduct?: OrderProductEntity[];
 
 }
 

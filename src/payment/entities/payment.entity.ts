@@ -1,23 +1,25 @@
 /* eslint-disable prettier/prettier */
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, TableInheritance, UpdateDateColumn } from "typeorm";
+import { OrderEntity } from "src/order/entities/order.entity";
+import { PaymentStatusEntity } from "src/payment-status/entities/payment-status.entity";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, TableInheritance, UpdateDateColumn } from "typeorm";
 
-@Entity({name: 'payment'})
+@Entity({ name: 'payment' })
 @TableInheritance({ column: { type: 'varchar', name: 'type' } })
 export abstract class PaymentEntity {
 
     @PrimaryGeneratedColumn()
-    id:number;
+    id: number;
 
     @Column({ name: 'status_id', nullable: false })
     statusId: number;
   
-    @Column({ name: 'price', nullable: false })
+    @Column({ name: 'price', nullable: false, type: 'decimal', precision: 10, scale: 2 })
     price: number;
   
-    @Column({ name: 'discount', nullable: false })
+    @Column({ name: 'discount', nullable: false, type: 'decimal', precision: 10, scale: 2 })
     discount: number;
   
-    @Column({ name: 'final_price', nullable: false })
+    @Column({ name: 'final_price', nullable: false, type: 'decimal', precision: 10, scale: 2 })
     finalPrice: number;
   
     @Column({ name: 'type', nullable: false })
@@ -28,5 +30,12 @@ export abstract class PaymentEntity {
   
     @UpdateDateColumn({ name: 'updated_at' })
     updatedAt: Date;
+
+    @OneToMany(() => OrderEntity, (order) => order.payment)
+    orders?: OrderEntity[];
     
+    @ManyToOne(() => PaymentStatusEntity, (payment) => payment.payments)
+    @JoinColumn({ name: 'status_id', referencedColumnName: 'id' })
+    paymentStatus?: PaymentStatusEntity;
+
 }
