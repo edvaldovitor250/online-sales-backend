@@ -1,3 +1,5 @@
+/* eslint-disable prettier/prettier */
+// eslint-disable-next-line prettier/prettier
 import { Module } from '@nestjs/common';
 import { CartService } from './cart.service';
 import { CartController } from './cart.controller';
@@ -11,5 +13,4 @@ import { CartEntity } from './entities/cart.entities';
   controllers: [CartController],
   exports: [CartService],
 })
-// eslint-disable-next-line prettier/prettier
 export class CartModule {}

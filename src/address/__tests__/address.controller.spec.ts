@@ -48,6 +48,7 @@ describe('AddressController', () => {
     const address = await controller.findAllAddressByUserId(userEntityMocks.id)
 
     expect(address).toStrictEqual({
+      id: AddressMocks.id,
       complement: AddressMocks.complement,
       numberAddress: AddressMocks.numberAddress,
       cep: AddressMocks.cep
