@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 
-import { ProductEntity } from "src/product/entities/product.entity";
+import { ProductEntity } from "../../product/entities/product.entity";
 import { OrderEntity } from "../../order/entities/order.entity";
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 

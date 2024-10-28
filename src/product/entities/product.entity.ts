@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { OrderProductEntity } from "src/order-product/entities/order-product.entity";
+import { OrderProductEntity } from "../../order-product/entities/order-product.entity";
 import { CartProductEntity } from "../../cart-product/entities/cart-product.entity";
 import { CategoryEntity } from "../../category/entities/category.entity";
 import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";

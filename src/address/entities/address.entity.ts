@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { OrderEntity } from "src/order/entities/order.entity";
+import { OrderEntity } from "../../order/entities/order.entity";
 import { CityEntity } from "../../city/entities/city.entity";
 import { UserEntity } from "../../user/entities/user.entity";
 import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, JoinColumn, ManyToOne, OneToMany } from "typeorm";
